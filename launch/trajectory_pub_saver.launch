@@ -1,0 +1,5 @@
+<launch>
+    <rosparam file="$(find trajectory_visualizer)/config/trajectory_visualizer.yaml" command="load"/>
+
+    <node pkg="trajectory_visualizer" name="trajectory_publisher_saver_node" type="trajectory_pub_save"/>
+</launch>
