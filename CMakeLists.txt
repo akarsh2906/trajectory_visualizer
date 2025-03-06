@@ -39,16 +39,16 @@ catkin_package(
 
 
 
-add_executable(trajectory_pub_save src/trajectory_pub_save.cpp)
-add_executable(trajectory_read_pub src/trajectory_read_pub.cpp)
+add_executable(trajectory_publisher_saver src/trajectory_publisher_saver.cpp)
+add_executable(trajectory_reader_publisher src/trajectory_reader_publisher.cpp)
 
 
-add_dependencies(trajectory_pub_save ${PROJECT_NAME}_generate_messages_cpp)
+add_dependencies(trajectory_publisher_saver ${PROJECT_NAME}_generate_messages_cpp)
 
-target_link_libraries(trajectory_pub_save
+target_link_libraries(trajectory_publisher_saver
   ${catkin_LIBRARIES}
 )
-target_link_libraries(trajectory_read_pub
+target_link_libraries(trajectory_reader_publisher
   ${catkin_LIBRARIES}
 )
 

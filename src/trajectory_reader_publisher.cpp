@@ -2,19 +2,22 @@
 #include <visualization_msgs/MarkerArray.h>
 #include <visualization_msgs/Marker.h>
 #include <geometry_msgs/PointStamped.h>
+#include <geometry_msgs/Quaternion.h>
 #include <tf2_ros/transform_listener.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <tf2/LinearMath/Quaternion.h>
 
 struct TrajectoryPoint {
-    double time, x, y;
+    double time, x, y, yaw;
 };
 
 class TrajectoryReaderPublisher {
 private:
     ros::NodeHandle nh_;
+    ros::NodeHandle private_nh_;
     ros::Publisher trajectory_pub_;
     tf2_ros::Buffer tf_buffer_;
     tf2_ros::TransformListener tf_listener_;
@@ -24,11 +27,11 @@ private:
     std::string marker_topic_;
 
 public:
-    TrajectoryReaderPublisher() : nh_(""), tf_listener_(tf_buffer_) {
+    TrajectoryReaderPublisher() : private_nh_("~"), tf_listener_(tf_buffer_) {
         // Load parameters
-        nh_.param<std::string>("trajectory_file", trajectory_file_, "/home/akarsh20/test2.csv");
-        nh_.param<std::string>("odom_frame", odom_frame_, "odom");
-        nh_.param<std::string>("marker_topic", marker_topic_, "trajectory_markers");
+        private_nh_.param<std::string>("trajectory_file", trajectory_file_, "/home/akarsh20/test3.csv");
+        private_nh_.param<std::string>("odom_frame", odom_frame_, "odom");
+        private_nh_.param<std::string>("marker_topic", marker_topic_, "trajectory_markers");
 
         trajectory_pub_ = nh_.advertise<visualization_msgs::MarkerArray>(marker_topic_, 10);
         
@@ -68,14 +71,15 @@ public:
             marker.header.stamp = ros::Time::now();
             marker.ns = "trajectory";
             marker.id = id++;
-            marker.type = visualization_msgs::Marker::SPHERE;
+            marker.type = visualization_msgs::Marker::ARROW;
             marker.action = visualization_msgs::Marker::ADD;
             marker.pose.position.x = transformed_point.point.x;
             marker.pose.position.y = transformed_point.point.y;
             marker.pose.position.z = 0.0;
-            marker.scale.x = 0.1;
-            marker.scale.y = 0.1;
-            marker.scale.z = 0.1;
+            marker.pose.orientation = yawToQuaternion(point.yaw);
+            marker.scale.x = 0.04;
+            marker.scale.y = 0.04;
+            marker.scale.z = 0.02;
             marker.color.r = 0.0;
             marker.color.g = 1.0;
             marker.color.b = 0.0;
@@ -103,17 +107,30 @@ public:
             std::stringstream ss(line);
             TrajectoryPoint point;
             char comma;
-            if (ss >> point.time >> comma >> point.x >> comma >> point.y) {
+            if (ss >> point.time >> comma >> point.x >> comma >> point.y >> comma >> point.yaw) {
                 trajectory.push_back(point);
             }
         }
         file.close();
         return trajectory;
     }
+
+    geometry_msgs:: Quaternion yawToQuaternion(double yaw){
+        tf2::Quaternion q;
+        q.setRPY(0, 0, yaw);
+
+        geometry_msgs::Quaternion quat_msg;
+        quat_msg.x = q.x();
+        quat_msg.y = q.y();
+        quat_msg.z = q.z();
+        quat_msg.w = q.w();
+
+        return quat_msg;
+    }
 };
 
 int main(int argc, char** argv) {
-    ros::init(argc, argv, "trajectory_reader_publisher");
+    ros::init(argc, argv, "trajectory_reader_publisher_node");
     TrajectoryReaderPublisher reader;
     ros::spin();
     return 0;

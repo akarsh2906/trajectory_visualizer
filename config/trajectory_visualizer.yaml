@@ -1,11 +1,13 @@
-
-namespace: ""
-odom_frame: "odom"
-odom_topic: "testodom"
-marker_topic: "trajectory_markers"
+trajectory_publisher_saver_node:
+  namespace: ""
+  odom_frame: "odom"
+  odom_topic: "odom"
+  marker_topic: "trajectory_markers"
+  marker_interval: 0.1
+  position_tolerance: 0.02
+  yaw_tolerance: 0.02
 
 
 trajectory_reader_publisher_node:
-  namespace: ""
   odom_frame: "odom"
   marker_topic: "trajectory_markers"
