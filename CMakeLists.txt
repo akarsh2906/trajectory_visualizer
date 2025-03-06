@@ -34,23 +34,52 @@ generate_messages(
 )
 
 catkin_package(
-  CATKIN_DEPENDS roscpp std_msgs message_runtime 
+  INCLUDE_DIRS include
+  LIBRARIES trajectory_publisher_saver
+  CATKIN_DEPENDS roscpp std_msgs message_runtime nav_msgs visualization_msgs message_generation geometry_msgs tf2_ros tf2_geometry_msgs
+)
+
+
+include_directories(
+    include
+    ${catkin_INCLUDE_DIRS}
 )
 
 
 
-add_executable(trajectory_publisher_saver src/trajectory_publisher_saver.cpp)
-add_executable(trajectory_reader_publisher src/trajectory_reader_publisher.cpp)
 
-
-add_dependencies(trajectory_publisher_saver ${PROJECT_NAME}_generate_messages_cpp)
+add_library(trajectory_publisher_saver
+    src/trajectory_publisher_saver.cpp
+)
 
 target_link_libraries(trajectory_publisher_saver
-  ${catkin_LIBRARIES}
+    ${catkin_LIBRARIES}
 )
-target_link_libraries(trajectory_reader_publisher
-  ${catkin_LIBRARIES}
+
+add_executable(trajectory_publisher_saver_node src/trajectory_publisher_saver_node.cpp)
+target_link_libraries(trajectory_publisher_saver_node
+    trajectory_publisher_saver
+    ${catkin_LIBRARIES}
 )
+
+
+
+
+
+add_library(trajectory_reader_publisher
+    src/trajectory_reader_publisher.cpp
+)
+
+target_link_libraries(trajectory_reader_publisher 
+    ${catkin_LIBRARIES}
+)
+
+add_executable(trajectory_reader_publisher_node src/trajectory_reader_publisher_node.cpp)
+target_link_libraries(trajectory_reader_publisher_node
+    trajectory_reader_publisher
+    ${catkin_LIBRARIES}
+)
+
 
 
 
@@ -58,8 +87,4 @@ install(DIRECTORY launch config rviz
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
-catkin_package()
-
-
-include_directories(include ${catkin_INCLUDE_DIRS})
 
