@@ -1,0 +1,16 @@
+<launch>
+
+    <arg name="trajectory_file" default="/home/akarsh20/nav1.csv"/>
+    <arg name="rviz_config" default="$(find trajectory_visualizer)/rviz/visualize.rviz"/>
+
+    <rosparam file="$(find trajectory_visualizer)/config/trajectory_visualizer.yaml" command="load"/>
+
+    <rosparam param="trajectory_file" ns="trajectory_reader_publisher_node" subst_value="True">$(arg trajectory_file)</rosparam>
+
+    <node pkg="trajectory_visualizer" name="trajectory_reader_publisher_node" type="trajectory_reader_publisher_node"/>
+
+    <node pkg="tf" type="static_transform_publisher" name="map_to_odom" args="0 0 0 0 0 0 map odom 10" />
+
+     <!-- <node pkg="rviz" type="rviz" name="rviz" args="-d $(arg rviz_config)"/> -->
+     
+</launch>

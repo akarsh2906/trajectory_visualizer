@@ -71,7 +71,7 @@ void TrajectoryPublisherSaver::publishMarkers() {
         marker.pose.position.y = point.y;
         marker.pose.position.z = 0.0;
         marker.pose.orientation = yawToQuaternion(point.yaw);
-        marker.scale.x = 0.1;
+        marker.scale.x = 0.08;
         marker.scale.y = 0.02;
         marker.scale.z = 0.04;
         marker.color.r = 1.0;
