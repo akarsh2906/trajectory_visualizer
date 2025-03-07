@@ -15,6 +15,9 @@ Go to workspace directory and build:
     catkin_make
 For this assignment, I have used the **AR100 robot** for simulation.
 
+<br />
+<br />
+
 ## Trajectory publisher and saver node
 Launch your robot simulation,
 Then launch navigation,
@@ -60,6 +63,9 @@ I've done this so that markers aren't constantly being published even when the r
 
 Same like position tolerance but for orientation.
 
+<br />
+<br />
+
 ## Trajectory reader and publisher node
 Run `roscore`
 Open RViz and open the config (**visualize.rviz**) present in the rviz directory of the package.
@@ -83,6 +89,9 @@ The odom frame id of the odometry topic that will be used to get the robot's loc
     marker_topic: "trajectory_markers"
 
 The marker array topic name
+
+<br />
+<br />
 
 ## Pseudocode
 ### Trajectory Collection
