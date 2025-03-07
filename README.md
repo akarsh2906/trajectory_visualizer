@@ -2,6 +2,9 @@
 
 **trajectory_visualization** package, tested with ROS Noetic on Ubuntu 20.04
 
+## [Demonstration Video](https://drive.google.com/file/d/1Yzpje0CHUridz5hZzh_00_GLUtXqdiov/view?usp=drive_link)
+https://drive.google.com/file/d/1Yzpje0CHUridz5hZzh_00_GLUtXqdiov/view?usp=drive_link
+
 ## Build
 In your workspace src directory:
 
